@@ -19,7 +19,7 @@ app.get('/',(req, res)=>{
 app.post('/payment-sheet', async (req, res) => {
     // Use an existing Customer ID if this is a returning customer.
 
-    const {amount, currency} = req.body
+    const {amount, currency,description} = req.body
 
     const customer = await stripe.customers.create();
     const ephemeralKey = await stripe.ephemeralKeys.create(
@@ -30,7 +30,9 @@ app.post('/payment-sheet', async (req, res) => {
       amount: amount,
       currency: currency,
       customer: customer.id,
-      payment_method_types: [ 'card'],
+      payment_method_types: ['card'],
+      // Aquí es donde generalmente se establece la descripción
+      description: description,
     });
   
     res.json({
